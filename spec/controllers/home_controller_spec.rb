@@ -1,4 +1,4 @@
-require "spec/rails_helper"
+require "rails_helper"
 
 RSpec.describe HomeController do
   let(:user) { instance_double(User) }
