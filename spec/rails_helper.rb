@@ -5,6 +5,7 @@ require File.expand_path('../../config/environment', __FILE__)
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'rspec/rails'
+require 'support/controller_helpers'
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -28,6 +29,10 @@ ActiveRecord::Migration.maintain_test_schema!
 
 RSpec.configure do |config|
 
+  config.include Warden::Test::Helpers
+  config.include Devise::TestHelpers, :type => :controller
+  config.include ControllerHelpers, :type => :controller
+
   config.before(:suite) do
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.clean_with(:truncation)
@@ -38,6 +43,7 @@ RSpec.configure do |config|
       example.run
     end
   end
+
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
@@ -72,7 +78,7 @@ Shoulda::Matchers.configure do |config|
     with.test_framework :rspec
     with.library :active_record
     with.library :active_model
-    with.library :active_controller
+    with.library :action_controller
     with.library :rails
   end
 end
